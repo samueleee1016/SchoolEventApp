@@ -2,7 +2,17 @@
 
 Sistema di gestione eventi su due giorni con registrazione sessioni orarie, verifica email OTP, e aggiornamenti real-time tramite WebSocket.
 
-![SchoolEventDays Preview](./screenshots/homepage.png) <!-- Aggiungi screenshot quando disponibili -->
+![Inserimento corsi 1 preview](./screenshots/inserimentoCorsi1.png)
+![Inserimento corsi 2 preview](./screenshots/inserimentoCorsi2.png)
+![Inserimento corsi 3 preview](./screenshots/inserimentoCorsi3.png)
+![Popup codice verifica preview](./screenshots/verificaCodice1.png)
+![Email codice verifica preview](./screenshots/emailCodiceVerifica.png)
+![Codice errato preview](./screenshots/codiceSbagliato.png)
+![Tempo per il codice scaduto preview](./screenshots/tempoCodiceScaduto.png)
+![Registrazione 1 preview](./screenshots/registrazione1.png)
+![Registrazione 1 preview](./screenshots/registrazione2.png)
+![Email conferma corsi preview](./screenshots/emailConfermaCorsi.png)
+![Corsi presenti preview](./screenshots/corsiPresenti.png)
 
 ## 📋 Indice
 - [Caratteristiche](#-caratteristiche)
