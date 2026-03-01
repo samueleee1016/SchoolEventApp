@@ -203,7 +203,7 @@ NODE_ENV=production node main.js
 L'applicazione sarà disponibile su: **http://localhost:3000**
 
 ## Test in produzione
-Se si vuole testare l'app in produzione lo si può fare da: *link app in produzione su railway*
+Se si vuole testare l'app in produzione lo si può fare da: *link app in produzione su railway* (in arrivo)
 Altrimenti seguire le istruzioni qui sotto
 
 ### N.B.: 
