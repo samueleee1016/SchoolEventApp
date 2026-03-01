@@ -7,8 +7,8 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 ![Inserimento corsi 3 preview](./screenshots/inserimentoCorsi3.png)
 ![Popup codice verifica preview](./screenshots/verificaCodice1.png)
 ![Email codice verifica preview](./screenshots/emailCodiceVerifica.png)
-<!-- ![Codice errato preview](./screenshots/codiceSbagliato.png)
-![Tempo per il codice scaduto preview](./screenshots/tempoCodiceScaduto.png) -->
+![Codice errato preview](./screenshots/codiceSbagliato.png)
+![Tempo per il codice scaduto preview](./screenshots/tempoCodiceScaduto.png)
 ![Registrazione 1 preview](./screenshots/registrazione1.png)
 ![Registrazione 1 preview](./screenshots/registrazione2.png)
 ![Email conferma corsi preview](./screenshots/emailConfermaCorsi.png)
