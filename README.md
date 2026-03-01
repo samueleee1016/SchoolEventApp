@@ -94,7 +94,7 @@ redis-server --version # v6.0.0+
 
 ### 1. Clona il repository
 ```bash
-git clone https://github.com/tuousername/SchoolEventDays.git
+git clone https://github.com/samueleee1016/SchoolEventDays.git
 cd SchoolEventDays
 ```
 
