@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Inserimento corsi</title>
+        <link rel="stylesheet" href="./css/inserimentoCorsi.css">
+    </head>
+
+    <body>
+        <div class="info" hidden>
+            <p id="nCorsi_text">Numero corsi già presenti: <span id="nCorsi"></span></p> <br>
+            Corsi già presenti (nota bene poichè non puoi inserire un corso con lo stesso nome): <br>
+            <table id="corsiPresenti"></table>
+        </div>
+
+        <div class="container">
+
+            <img src="./imgs/logo.png" class="logo">
+
+            <form id="form1" name="form1" onsubmit="fCheckForm(event)" method="post">
+                <div id="div_n_rel">
+                    <div class="section-title">Numero relatori interni</div>
+                    Inserisci qui sotto il numero di relatori del corso (1 → 4): <br>
+                    <input type="number" name="n_relatori" id="n_relatori" min="1" max="4" required oninput="fCreateInt()" onkeyup="fCreateInt(event.key)">
+                </div>
+
+                <div id="div_interni" name="dati_rel_interni"></div>
+
+                <div id="div_esterni">
+                    <div class="section-title">Relatori esterni</div>
+                    Indica se ci saranno relatori esterni: <br>
+                    <input type="radio" name="rel_esterni" value="si" id="rel_esterni_si" onchange="RelEstSi()"> si 
+                    <input type="radio" name="rel_esterni" value="no" id="rel_esterni_no" onchange="RelEstNo()" checked> no <br>
+                    <div id="div_esterni_n_rel"></div>
+                    <div id="div_esterni_campi"></div>
+                </div>
+
+                <div id="dati_corso">
+                    <div class="section-title">Dati del corso</div>
+                    <input type="text" name="nome_corso" id="nome_corso" placeholder="nome corso" onkeyup='fValidateForm()' maxlength="35"> <br>
+                    <input type="text" name="descrizione" id="descrizione" placeholder="descrizione" maxlength="200" minlength="30" onkeyup='fValidateForm()'> <br>
+                    <h3>Numero di ore</h3>
+                    Durata del corso (1/2 ore) <br>
+                    <input type="number" name="n_ore" id="n_ore" oninput="fValidateForm()" onchange="fCheckNore()" min="1" max="2"> <br>
+                    <h3>Giorni di partecipazione</h3>
+                    gg/mm/aa 
+                    <input type="radio" name="giorno1" value="si" id="giorno1_si" onchange="fValidateForm()" checked> si 
+                    <input type="radio" name="giorno1" value="no" id="giorno1_no" onchange="fValidateForm()"> no <br>
+                    gg/mm/aa 
+                    <input type="radio" name="giorno2" value="si" id="giorno2_si" onchange="fValidateForm()" checked> si 
+                    <input type="radio" name="giorno2" value="no" id="giorno2_no" onchange="fValidateForm()"> no <br>
+                </div>
+
+                <input type='submit' name='invia' id='invia' value='invia' disabled="yes">
+            </form>
+
+        </div>
+        <div class="popup" id="popup">
+            <p id="par">Inserisci il codice di conferma che ti è arrivato per email</p>
+            <input type="text" name="emailCode" id="emailCode"> <br>
+            <p id="result"></p>
+            <button type="button" id="btn">chiudi</button>
+            <button type="button" id="emailBtn">Ho scritto male l'email</button>
+        </div>
+
+        <div id="overlay"></div>
+    </body>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/inserimentoCorsi.js"></script>
+</html>

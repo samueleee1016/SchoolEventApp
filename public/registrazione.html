@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <title>Registrazione</title>
+        <link rel="stylesheet" href="./css/registrazione.css">
+    </head>
+    <body>
+        <div class="container">
+            <img src="./imgs/logo.png" id="logo"> <br>
+            <a class="card" target="_blank" id="linkOtherCourses">vedi i <span>corsi</span></a> <br>
+            <form id="formDati" method="post" onsubmit="fCheckEmail(event)">
+                <br>Dati personali: <br>
+                <input type="text" name="nome" id="nome" placeholder="nome" onkeyup="fValidateForm()"> <br>
+                <input type="text" name="cognome" id="cognome" placeholder="cognome" onkeyup="fValidateForm()"> <br>
+                <input type="text" name="classe" id="classe" placeholder="classe" onkeyup="fValidateForm()"> <br>
+                <input type="text" name="email" id="email" placeholder="email" onkeyup="fValidateForm()"> <br> <br>
+
+                <div id="giorno1">
+                    Corsi per il giorno gg/mm/aaaa (1): <br>
+                    Se sarai un relatore di un corso o se già sai che sarai assente selezionalo qui sotto: <br>
+                    Sarai un relatore:
+                    Si <input type="radio" name="relatore_g1" id="relatore_g1" value="si" onchange="fValidateForm(), fAssentiRelatori()">
+                    No <input type="radio" name="relatore_g1" id="relatore_g1" value="no" checked onchange="fValidateForm(), fAssentiRelatori()"> <br>
+                    Sarai assente:
+                    Si <input type="radio" name="assente_g1" id="assente_g1" value="si" onchange="fValidateForm(), fAssentiRelatori()">
+                    No <input type="radio" name="assente_g1" id="assente_g1" value="no" checked onchange="fValidateForm(), fAssentiRelatori()"> <br><br>
+                    
+                    <div id="giorno1_corsi">
+                        Altrimenti selezionia il corso a cui vuoi partecipare ora per ora: <br>
+                        Nota bene: se alla prima o alla terza ora, selezioni un corso da 2 ore, lo devi selezionare anche all'ora successiva! <br>
+                        Prima ora: 8.00-9.00 <select name="prima_ora_g1" id="prima_ora_g1" onchange="fValidateForm(), fCheck2ora(prima_ora_g1, seconda_ora_g1)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Seconda ora: 9.00-10.00 <select name="seconda_ora_g1" id="seconda_ora_g1" onchange="fValidateForm(), fCheckSecondaQuartaOra(seconda_ora_g1, prima_ora_g1)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Terza ora: 10.00-11.00 <select name="terza_ora_g1" id="terza_ora_g1" onchange="fValidateForm(), fCheck2ora(terza_ora_g1, quarta_ora_g1)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Quarta ora: 11.00-12.00 <select name="quarta_ora_g1" id="quarta_ora_g1" onchange="fValidateForm(), fCheckSecondaQuartaOra(quarta_ora_g1, terza_ora_g1)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Quinta ora: 12.00-13.00 <select name="quinta_ora_g1" id="quinta_ora_g1" onchange="fValidateForm()">
+                            <option value="" selected></option>
+                        </select> <br>
+                    </div>
+                </div> <br>
+
+                <div id="giorno2">
+                    Corsi per il giorno gg/mm/aaaa (2): <br>
+                    Se sarai un relatore di un corso o se già sai che sarai assente selezionalo qui sotto: <br>
+                    Sarai un relatore:
+                    Si <input type="radio" name="relatore_g2" id="relatore_g2" value="si" onchange="fValidateForm(), fAssentiRelatori()">
+                    No <input type="radio" name="relatore_g2" id="relatore_g2" value="no" checked onchange="fValidateForm(), fAssentiRelatori()"> <br>
+                    Sarai assente:
+                    Si <input type="radio" name="assente_g2" id="assente_g2" value="si" onchange="fValidateForm(), fAssentiRelatori()">
+                    No <input type="radio" name="assente_g2" id="assente_g2" value="no" checked onchange="fValidateForm(), fAssentiRelatori()"> <br><br>
+                    
+                    <div id="giorno2_corsi">
+                        Altrimenti selezionia il corso a cui vuoi partecipare ora per ora: <br>
+                        Nota bene: se alla prima o alla terza ora, selezioni un corso da 2 ore, lo devi selezionare anche all'ora successiva! <br>
+                        Prima ora: 8.00-9.00 <select name="prima_ora_g2" id="prima_ora_g2" onchange="fValidateForm(), fCheck2ora(prima_ora_g2, seconda_ora_g2)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Seconda ora: 9.00-10.00 <select name="seconda_ora_g2" id="seconda_ora_g2" onchange="fValidateForm(), fCheckSecondaQuartaOra(seconda_ora_g2, prima_ora_g2)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Terza ora: 10.00-11.00 <select name="terza_ora_g2" id="terza_ora_g2" onchange="fValidateForm(), fCheck2ora(terza_ora_g2, quarta_ora_g2)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Quarta ora: 11.00-12.00 <select name="quarta_ora_g2" id="quarta_ora_g2" onchange="fValidateForm(), fCheckSecondaQuartaOra(quarta_ora_g2, terza_ora_g2)">
+                            <option value="" selected></option>
+                        </select> <br>
+                        Quinta ora: 12.00-13.00 <select name="quinta_ora_g2" id="quinta_ora_g2" onchange="fValidateForm()">
+                            <option value="" selected></option>
+                        </select> <br>
+                    </div>
+                </div> <br>
+
+                <input type="submit" name="invia" id="invia" value="invia" disabled="yes">
+            </form>
+        </div> <br>
+        <p id="finalPar">L'elenco dei tuoi corsi ti arriverà per email</p>
+
+        <div class="popup" id="popup">
+            <p id="par">Inserisci il codice di conferma che ti è arrivato per email, se non ti arriva controlla di aver scritto l'email correttamente</p>
+            <input type="text" name="emailCode" id="emailCode"> <br>
+            <p id="result"></p>
+            <button type="button" id="btn">chiudi</button>
+            <button type="button" id="emailBtn">Ho scritto male l'email</button>
+        </div>
+
+        <div id="overlay"></div>
+    </body>
+    <script src="./js/config.js"></script>
+    <script src="./js/registrazione.js"></script>
+</html>
