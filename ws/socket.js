@@ -156,6 +156,14 @@ const transporter = nodemailer.createTransport({
    } 
 });
 
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("Errore di configurazione email:", error);
+  } else {
+    console.log("Il server è pronto per inviare email!");
+  }
+});
+
 async function sendMail(to, code)
     {
     try
