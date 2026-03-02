@@ -136,7 +136,7 @@ CREATE TABLE `elenco_relatori` (
 -- ============================================
 
 CREATE TABLE `emails_for_verify` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `verificationId` VARCHAR(64) NOT NULL,
   `codice` VARCHAR(6) NOT NULL COMMENT 'Codice OTP a 6 cifre',
   `email` VARCHAR(100) NOT NULL COMMENT 'Email destinatario',
   `orario` BIGINT NOT NULL COMMENT 'Timestamp Unix per validità',
