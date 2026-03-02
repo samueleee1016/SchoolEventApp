@@ -166,6 +166,7 @@ transporter.verify(function (error, success) {
 
 async function sendMail(to, code)
     {
+    console.log("before sending email");
     try
         {
         const mailOptions = {
@@ -182,8 +183,10 @@ async function sendMail(to, code)
         }
     catch(err)
         {
+        console.error(err);
         throw new HttpError(err.message, err.status ?? 451)
         }
+    console.log("email sent");
     }
 
 
