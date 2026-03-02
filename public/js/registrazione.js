@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000');
+const ws = new WebSocket(`${WS_BASE}`);
 const o1g1 = document.querySelector('#prima_ora_g1');
 const o2g1 = document.querySelector('#seconda_ora_g1');
 const o3g1 = document.querySelector('#terza_ora_g1');

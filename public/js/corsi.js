@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000');
+const ws = new WebSocket(`${WS_BASE}`);
 const table = document.querySelector('#courses');
 ws.onopen = () => {
     ws.send(JSON.stringify({type: "GET_COURSES_VISUAL"}));

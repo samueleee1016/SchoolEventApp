@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000');
+const ws = new WebSocket(`${WS_BASE}`);
 const interni = document.querySelector('#div_interni');
 const esterni_1 = document.querySelector('#div_esterni');
 const esterni_2 = document.querySelector('#div_esterni_n_rel');
