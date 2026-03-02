@@ -156,17 +156,8 @@ const transporter = nodemailer.createTransport({
    } 
 });
 
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("Errore di configurazione email:", error);
-  } else {
-    console.log("Il server è pronto per inviare email!");
-  }
-});
-
 async function sendMail(to, code)
     {
-    console.log("before sending email");
     try
         {
         const mailOptions = {
@@ -186,7 +177,6 @@ async function sendMail(to, code)
         console.error(err);
         throw new HttpError(err.message, err.status ?? 451)
         }
-    console.log("email sent");
     }
 
 
