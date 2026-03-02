@@ -137,9 +137,9 @@ CREATE TABLE `elenco_relatori` (
 
 CREATE TABLE `emails_for_verify` (
   `verificationId` VARCHAR(64) NOT NULL,
-  `codice` VARCHAR(6) NOT NULL COMMENT 'Codice OTP a 6 cifre',
+  `codice` INT NOT NULL COMMENT 'Codice OTP a 6 cifre',
   `email` VARCHAR(100) NOT NULL COMMENT 'Email destinatario',
-  `orario` BIGINT NOT NULL COMMENT 'Timestamp Unix per validità',
+  `status` ENUM('pending', 'verified', 'expired') DEFAULT 'pending',
   `expires_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data creazione',
   PRIMARY KEY (`verificationId`),
   KEY `idx_email` (`email`),
