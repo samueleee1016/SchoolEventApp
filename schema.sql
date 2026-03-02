@@ -135,7 +135,7 @@ CREATE TABLE `elenco_relatori` (
 -- Cleanup automatico dei codici scaduti
 -- ============================================
 
-CREATE TABLE `email_con_codice` (
+CREATE TABLE `emails_for_verify` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `codice` VARCHAR(6) NOT NULL COMMENT 'Codice OTP a 6 cifre',
   `email` VARCHAR(100) NOT NULL COMMENT 'Email destinatario',
