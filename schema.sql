@@ -140,8 +140,8 @@ CREATE TABLE `emails_for_verify` (
   `codice` VARCHAR(6) NOT NULL COMMENT 'Codice OTP a 6 cifre',
   `email` VARCHAR(100) NOT NULL COMMENT 'Email destinatario',
   `orario` BIGINT NOT NULL COMMENT 'Timestamp Unix per validità',
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data creazione',
-  PRIMARY KEY (`id`),
+  `expires_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data creazione',
+  PRIMARY KEY (`verificationId`),
   KEY `idx_email` (`email`),
   KEY `idx_codice` (`codice`),
   KEY `idx_orario` (`orario`) COMMENT 'Per cleanup codici scaduti'
