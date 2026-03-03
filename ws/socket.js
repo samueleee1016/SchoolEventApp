@@ -170,6 +170,7 @@ async function sendMail(to, code)
                     <h2>${code}</h2>
                     <p>Sarà valido per 5 minuti</p>`
         };
+        console.log("check before sending email");
         await transporter.sendMail(mailOptions);
         }
     catch(err)
@@ -182,6 +183,7 @@ async function sendMail(to, code)
 
 async function fVerifyEmail(email)
     {
+    console.log("check in function fVerifyEmail");
     check.checkEmail(email);
     const verificationId = randomUUID();
     const verificationCode = generateNumber();
@@ -192,6 +194,7 @@ async function fVerifyEmail(email)
     const [result] = await pool.execute(sql, data);
 
     await sendMail(email, verificationCode);
+    console.log("email sent");
     return {
         type: "CODE_SENT",
         email: email,
