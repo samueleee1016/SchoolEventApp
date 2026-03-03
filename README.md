@@ -45,7 +45,7 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 - 📧 **Email OTP** per verifica creazione corso (6 cifre, 5 min validità)
 - 📧 **Email conferma** registrazione con riepilogo corsi scelti
 - 📧 **Template HTML** responsive e professionali
-- 📧 **Gmail SMTP** con App Password security
+- 📧 **API HTTP** Con Resend API Key
 
 ### Real-time Updates
 - ⚡ **WebSocket** per comunicazione bidirezionale
@@ -60,7 +60,7 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 - **MySQL2** (v3.16.0) - Database relazionale
 - **WebSocket (ws)** (v8.18.3) - Comunicazione real-time
 - **Redis** (v5.11.0) - Cache e rate limiting store
-- **Nodemailer** (v7.0.12) - Invio email
+- **Resend** (v6.9.3) - Invio email
 - **express-rate-limit** (v8.2.1) - Rate limiting middleware
 - **dotenv** (v17.2.3) - Environment variables
 
@@ -134,14 +134,14 @@ redis-cli ping
 # Risposta: PONG
 ```
 
-### 5. Configura Gmail per invio email
+### 5. Configura Resend per invio email
 
-**Crea App Password per Gmail:**
-1. Vai su https://myaccount.google.com/apppasswords
-2. Attiva "Verifica in due passaggi" se non l'hai già fatto
-3. Genera una App Password per "Posta"
-4. Copia la password (16 caratteri)
-5. Usa questa password in `.env` (NON la tua password Gmail normale)
+**Crea la tua API Key su resend:**
+1. Vai su https://resend.com 
+2. Accedi o registrati
+3. Vai nella sezione API-keys
+4. Crea la tua chiave - attenzione! Sarà visibile solo una volta
+5. Usa la API key in `.env` 
 
 ## ⚙️ Configurazione
 
@@ -155,14 +155,8 @@ cp .env.example .env
 Modifica il file `.env` con le tue configurazioni:
 
 ```env
-# ================================
-# EMAIL CONFIGURATION
-# ================================
-# Gmail account for sending emails
-# IMPORTANT: Use App Password, not regular password
-# How to get App Password: https://myaccount.google.com/apppasswords
-MAIL_USER=your_email@gmail.com
-MAIL_PASS=your_16_char_app_password_here
+#API_KEY_RESEND --> get it from https://resend.com/api-keys 
+RESEND_API_KEY=your_resend_api_key
 
 # ================================
 # DATABASE CONFIGURATION
@@ -203,7 +197,9 @@ NODE_ENV=production node main.js
 L'applicazione sarà disponibile su: **http://localhost:3000**
 
 ## Test in produzione
-Se si vuole testare l'app in produzione lo si può fare da: *link app in produzione su railway* (in arrivo)
+Se si vuole testare l'app in produzione lo si può fare da: https://schooleventapp-production.up.railway.app 
+Per la sezione inserimento andare a https://schooleventapp-production.up.railway.app/inserimentoCorsi
+Per la sezione registrazine andare a https://schooleventapp-production.up.railway.app/registrazione
 Altrimenti seguire le istruzioni qui sotto
 
 ### N.B.: 
@@ -399,12 +395,14 @@ railway run mysql --host=$MYSQLHOST --user=$MYSQLUSER --password=$MYSQLPASSWORD 
 - Struttura identica a giorno 1
 
 **`elenco_relatori`** - Cache relatori
-- `nome`, `cognome`, `classe`
+- `nome`, `cognome`, `classe`, `nome_corso`
 
-**`email_con_codice`** - OTP temporanei
+**`emails_for_verification`** - OTP temporanei
+- `verificationId` 
 - `codice` (6 cifre)
 - `email`
-- `orario` (timestamp per validità 5 min)
+- `status` (default 'pending' altrimenti 'verified' o 'expired')
+- `expires_at` (timestamp per validità 5 min)
 
 ## 🎓 Use Cases
 
@@ -443,12 +441,6 @@ I contributi sono benvenuti! Per contribuire:
 4. Push al branch (`git push origin feature/AmazingFeature`)
 5. Apri una Pull Request
 
-<!-- ## 📄 Licenza
-
-Questo progetto è rilasciato sotto licenza **MIT**. Vedi il file [LICENSE](LICENSE) per i dettagli.
-
---- -->
-
 ## 🙏 Ringraziamenti
 
 - Express.js team per il framework
@@ -458,8 +450,4 @@ Questo progetto è rilasciato sotto licenza **MIT**. Vedi il file [LICENSE](LICE
 
 ---
 
-<!-- <div align="center">
-
 **⭐ Se questo progetto ti è stato utile, lascia una stella! ⭐**
-
-</div> -->
