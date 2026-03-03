@@ -121,10 +121,14 @@ CREATE TABLE `elenco_relatori` (
   `nome` VARCHAR(40) NOT NULL COMMENT 'Nome relatore',
   `cognome` VARCHAR(40) NOT NULL COMMENT 'Cognome relatore',
   `classe` VARCHAR(5) NOT NULL COMMENT 'Classe di appartenenza',
+  `nome_corso` VARCHAR(50) NOT NULL COMMENT 'Corso di riferimento',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data prima apparizione',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_relatore` (`nome`, `cognome`, `classe`),
-  KEY `idx_classe` (`classe`)
+  KEY `idx_classe` (`classe`),
+  FOREIGN KEY(nome_corso) REFERENCES corso(nome)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Lista relatori/organizzatori';
 
 -- ============================================
