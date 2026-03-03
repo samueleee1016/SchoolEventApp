@@ -35,7 +35,6 @@ exports.fCheckSecQuartaOra = async (id, corso, corsoPrec) => {
     const sql = "select n_ore from corso where nome = ?";
     const [resultCorso] = await pool.execute(sql, [corso]);
 
-    console.log(resultCorso);
     if(!resultCorso || Number(resultCorso[0].n_ore) == 1)
         {
         const [resultCorsoPrec] = await pool.execute(sql, [corsoPrec]);

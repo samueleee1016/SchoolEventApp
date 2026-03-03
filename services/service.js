@@ -195,9 +195,9 @@ async function sendMail(to, emailData)
     {
     try
         {
-        const htmlResponse = buildEmailHtml(emailData)
+        const htmlResponse = buildEmailHtml(emailData);
         const mailOptions = {
-            from: 'School Event Days',
+            from: 'School Event Days <onboarding@resend.dev>',
             to: to,
             subject: "I tuoi corsi - School Event Days",
             html: htmlResponse
