@@ -3,9 +3,11 @@ const pool = require('../db/pool');
 const check = require('../middlewares/nomeCognomeClasseEmail');
 const {randomUUID} = require('crypto');
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 const HttpError = require('../errors/httpError');
 const socketFunctions = require('../middlewares/webSocketFunctions');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 let wss;
 
@@ -142,26 +144,26 @@ function generateNumber()
     return Math.floor(100000 + Math.random() * 900000);
     }
 
-const { MAIL_USER, MAIL_PASS } = process.env;
-if(!MAIL_USER || !MAIL_PASS)
-    throw new HttpError("Missing email credentials");
+// const { MAIL_USER, MAIL_PASS } = process.env;
+// if(!MAIL_USER || !MAIL_PASS)
+//     throw new HttpError("Missing email credentials");
 
-const transporter = nodemailer.createTransport({
-   host: "smtp.gmail.com",
-   port: 587,
-   secure: false,
-   auth: {
-    user: MAIL_USER,
-    pass: MAIL_PASS
-   } 
-});
+// const transporter = nodemailer.createTransport({
+//    host: "smtp.gmail.com",
+//    port: 587,
+//    secure: false,
+//    auth: {
+//     user: MAIL_USER,
+//     pass: MAIL_PASS
+//    } 
+// });
 
 async function sendMail(to, code)
     {
     try
         {
         const mailOptions = {
-            from: 'School Event Days',
+            from: 'School Event Days <onboarding@resend.dev>',
             to: to,
             subject: "codice di accesso - School Event Days",
             text: `Il tuo codice è: ${code}
@@ -171,7 +173,7 @@ async function sendMail(to, code)
                     <p>Sarà valido per 5 minuti</p>`
         };
         console.log("check before sending email");
-        await transporter.sendMail(mailOptions);
+        await resend.emails.send(mailOptions);
         }
     catch(err)
         {
