@@ -2,31 +2,48 @@ const pool = require('../db/pool');
 const HttpError = require('../errors/httpError');
 const { broadcast } = require('../ws/socket');
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 const buildEmailHtml = require('../middlewares/buildEmailHtml.function').buildEmailHtml;
 const serviceFunctions = require('../middlewares/serviceFunctions');
 
 exports.insering = async (courseData, nRel, elencoRelData) => {
-    const data = [courseData.nomeCorso, courseData.descrizione, courseData.nome_cognome_classe_rel1, courseData.nome_cognome_classe_rel2, courseData.nome_cognome_classe_rel3, courseData.nome_cognome_classe_rel4, courseData.nOre, courseData.giorno1, courseData.giorno2, courseData.nome_ref_esterni, courseData.email];
-    let sql = "insert into corso(nome, descrizione, nome_cognome_classe_ref1, nome_cognome_classe_ref2, nome_cognome_classe_ref3, nome_cognome_classe_ref4, n_ore, giorno1, giorno2, nome_ref_esterni, email_ref) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const [resultCourse] = await pool.execute(sql, data);
+    const conn = await pool.getConnection();
+    try
+        {
+        await conn.beginTransaction();
 
-    const nomiRel = [elencoRelData.nome_rel1, elencoRelData.nome_rel2, elencoRelData.nome_rel3, elencoRelData.nome_rel4];
-    const cognomiRel = [elencoRelData.cognome_rel1, elencoRelData.cognome_rel2, elencoRelData.cognome_rel3, elencoRelData.cognome_rel4];
-    const classiRel = [elencoRelData.classe_rel1, elencoRelData.classe_rel2, elencoRelData.classe_rel3, elencoRelData.classe_rel4];
+        const data = [courseData.nomeCorso, courseData.descrizione, courseData.nome_cognome_classe_rel1, courseData.nome_cognome_classe_rel2, courseData.nome_cognome_classe_rel3, courseData.nome_cognome_classe_rel4, courseData.nOre, courseData.giorno1, courseData.giorno2, courseData.nome_ref_esterni, courseData.email];
+        let sql = "insert into corso(nome, descrizione, nome_cognome_classe_ref1, nome_cognome_classe_ref2, nome_cognome_classe_ref3, nome_cognome_classe_ref4, n_ore, giorno1, giorno2, nome_ref_esterni, email_ref) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const [resultCourse] = await conn.execute(sql, data);
 
-    for(let i=0;i<nRel;i++)
-        await serviceFunctions.insertRelatori(nomiRel[i], cognomiRel[i], classiRel[i], elencoRelData.nomeCorso);
+        const nomiRel = [elencoRelData.nome_rel1, elencoRelData.nome_rel2, elencoRelData.nome_rel3, elencoRelData.nome_rel4];
+        const cognomiRel = [elencoRelData.cognome_rel1, elencoRelData.cognome_rel2, elencoRelData.cognome_rel3, elencoRelData.cognome_rel4];
+        const classiRel = [elencoRelData.classe_rel1, elencoRelData.classe_rel2, elencoRelData.classe_rel3, elencoRelData.classe_rel4];
 
-    sql = "select nome from corso";
-    const [courses] = await pool.execute(sql);
-    if(!courses || courses.length == 0) return;
-    broadcast({
-        type: "LOAD_COURSES_PRESENT", 
-        result: courses
-    });
+        for(let i=0;i<nRel;i++)
+            await serviceFunctions.insertRelatori(nomiRel[i], cognomiRel[i], classiRel[i], elencoRelData.nomeCorso, conn);
 
-    return resultCourse;
+        sql = "select nome from corso";
+        const [courses] = await conn.execute(sql);
+        if(!courses || courses.length == 0) return;
+        broadcast({
+            type: "LOAD_COURSES_PRESENT", 
+            result: courses
+        });
+
+        await conn.commit();
+        return resultCourse;
+        }
+    catch(err)
+        {
+        await conn.rollback();
+        throw new HttpError(err.message, err.status ?? 500);
+        }
+    finally
+        {
+        conn.release();
+        }
 };
 
 exports.registration = async (registrationData) => {
@@ -174,23 +191,6 @@ exports.registration = async (registrationData) => {
         }
 };
 
-const {
-    MAIL_USER,
-    MAIL_PASS
-} = process.env;
-if(!MAIL_USER || !MAIL_PASS)
-    throw new HttpError("Missing email credentials");
-
-const transporter = nodemailer.createTransport({
-   host: "smtp.gmail.com",
-   port: 587,
-   secure: false,
-   auth: {
-    user: MAIL_USER,
-    pass: MAIL_PASS
-   } 
-});
-
 async function sendMail(to, emailData)
     {
     try
@@ -202,7 +202,7 @@ async function sendMail(to, emailData)
             subject: "I tuoi corsi - School Event Days",
             html: htmlResponse
         };
-        await transporter.sendMail(mailOptions);
+        await resend.emails.send(mailOptions);
         }
     catch(err)
         {

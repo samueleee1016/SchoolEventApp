@@ -3,7 +3,6 @@ const pool = require('../db/pool');
 const check = require('../middlewares/nomeCognomeClasseEmail');
 const {randomUUID} = require('crypto');
 require('dotenv').config();
-// const nodemailer = require('nodemailer');
 const HttpError = require('../errors/httpError');
 const socketFunctions = require('../middlewares/webSocketFunctions');
 const { Resend } = require('resend');
@@ -144,20 +143,6 @@ function generateNumber()
     return Math.floor(100000 + Math.random() * 900000);
     }
 
-// const { MAIL_USER, MAIL_PASS } = process.env;
-// if(!MAIL_USER || !MAIL_PASS)
-//     throw new HttpError("Missing email credentials");
-
-// const transporter = nodemailer.createTransport({
-//    host: "smtp.gmail.com",
-//    port: 587,
-//    secure: false,
-//    auth: {
-//     user: MAIL_USER,
-//     pass: MAIL_PASS
-//    } 
-// });
-
 async function sendMail(to, code)
     {
     try
@@ -172,12 +157,10 @@ async function sendMail(to, code)
                     <h2>${code}</h2>
                     <p>Sarà valido per 5 minuti</p>`
         };
-        console.log("check before sending email");
         await resend.emails.send(mailOptions);
         }
     catch(err)
         {
-        console.error(err);
         throw new HttpError(err.message, err.status ?? 451)
         }
     }
@@ -185,7 +168,6 @@ async function sendMail(to, code)
 
 async function fVerifyEmail(email)
     {
-    console.log("check in function fVerifyEmail");
     check.checkEmail(email);
     const verificationId = randomUUID();
     const verificationCode = generateNumber();
@@ -196,7 +178,6 @@ async function fVerifyEmail(email)
     const [result] = await pool.execute(sql, data);
 
     await sendMail(email, verificationCode);
-    console.log("email sent");
     return {
         type: "CODE_SENT",
         email: email,

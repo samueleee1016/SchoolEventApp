@@ -1,11 +1,10 @@
-const pool = require('../db/pool');
 const HttpError = require('../errors/httpError');
 const { broadcast } = require('../ws/socket');
 
-exports.insertRelatori = async (nome, cognome, classe, nomeCorso) => {
+exports.insertRelatori = async (nome, cognome, classe, nomeCorso, conn) => {
     const sql = "insert into elenco_relatori (nome, cognome, classe, nome_corso) values(?, ?, ?, ?)";
     const relData = [nome, cognome, classe, nomeCorso];
-    const [resultRel] = await pool.execute(sql, relData);
+    const [resultRel] = await conn.execute(sql, relData);
 }
 
 exports.updateSeatsAndCheck = async (conn, posti, data) => {
