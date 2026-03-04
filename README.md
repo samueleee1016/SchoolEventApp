@@ -444,7 +444,7 @@ I contributi sono benvenuti! Per contribuire:
 ## 🙏 Ringraziamenti
 
 - Express.js team per il framework
-- Nodemailer team per il sistema email
+- Resend per il sistema email
 - MySQL team per il database
 - Comunità Node.js per supporto
 
