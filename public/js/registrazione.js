@@ -79,144 +79,28 @@ function fCreateLists(data)
     fCreateOption(o5g2, data.o5g2);
     };
 
+function deleteCourse(day, courseName)
+    {
+    const options = Array.from(day);
+    const dim = options.length;
+    for(let i=0;i<dim;i++)
+        {
+        if(options[i].value == courseName)
+            {
+            options[i].remove();
+            return;
+            }
+        }
+    }
+
 function fDeleteCourseFull(day, hour, courseName)
     {
-    let options;
-    let dim;
-    if(Number(day) == 1)
-        {
-        switch (hour) {
-            case 1:
-                options = Array.from(o1g1.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 2:
-                options = Array.from(o2g1.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 3:
-                options = Array.from(o3g1.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 4:
-                options = Array.from(o4g1.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 5:
-                options = Array.from(o5g1.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            default:
-                break;
-        }
-        }
-    else if(Number(day) == 2)
-        {
-        switch (hour) {
-            case 1:
-                options = Array.from(o1g2.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 2:
-                options = Array.from(o2g2.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 3:
-                options = Array.from(o3g2.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 4:
-                options = Array.from(o4g2.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            case 5:
-                options = Array.from(o5g2.options);
-                dim = options.length;
-                for(let i=0;i<dim;i++)
-                    {
-                    if(options[i].value == courseName)
-                        {
-                        options[i].remove();
-                        return;
-                        }
-                    }
-                break;
-            default:
-                break;
-        }
-        }
+    const hoursDay1 = [o1g1.options, o2g1.options, o3g1.options, o4g1.options, o5g1.options];
+    const hoursDay2 = [o1g2.options, o2g2.options, o3g2.options, o4g2.options, o5g2.options];
+    if(Number(day) === 1)
+        deleteCourse(hoursDay1[Number(hour-1)], courseName)
+    else if(Number(day) === 2)
+        deleteCourse(hoursDay2[Number(hour-1)], courseName)
     }
 
 function fCheck2ora(corso, nextCorso)
