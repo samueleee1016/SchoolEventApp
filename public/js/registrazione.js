@@ -92,7 +92,7 @@ function deleteCourse(day, courseName)
             }
         }
     }
-
+ 
 function fDeleteCourseFull(day, hour, courseName)
     {
     const hoursDay1 = [o1g1.options, o2g1.options, o3g1.options, o4g1.options, o5g1.options];
