@@ -336,6 +336,9 @@ SchoolEventDays/
 
 ### Railway (Consigliato)
 
+Nel caso non lo avessi visto, poco sopra trovi il link per provare l'app che è già disponibile in produzione.
+Altrimenti, se vuoi effettuare tu stesso/a il deploy, segui le istruzioni qui sotto:
+
 ```bash
 # Installa Railway CLI
 npm i -g @railway/cli
