@@ -248,8 +248,8 @@ L'applicazione sarà disponibile su: **http://localhost:3000**
 ### Accesso alla Dashboard
 
 **Pagine disponibili:**
-- `/admin/admin_corsi.html` - Visualizzazione completa di tutti i corsi
-- `/admin/admin_registrazione.html` - Visualizzazione di tutte le iscrizioni
+- `/admin/coursesData` - Visualizzazione completa di tutti i corsi
+- `/admin/registrationData` - Visualizzazione di tutte le iscrizioni
 
 **Come accedere:**
 1. Naviga su una delle pagine admin
@@ -274,7 +274,7 @@ ADMIN_PASSWORD_LENGTH=9
 
 ### Funzionalità Dashboard
 
-#### **Admin Corsi** (`/admin/admin_corsi.html`)
+#### **Admin Corsi** (`/admin/coursesData`)
 **Visualizza:**
 - Numero totale corsi creati
 - Nome e descrizione completa
@@ -285,7 +285,7 @@ ADMIN_PASSWORD_LENGTH=9
 - Email referente
 - **Posti disponibili** per ogni ora di entrambi i giorni (10 colonne)
 
-#### **Admin Registrazioni** (`/admin/admin_registrazione.html`)
+#### **Admin Registrazioni** (`/admin/registrationData`)
 **Visualizza:**
 - Numero totale iscrizioni
 - **Tabella Giorno 1:**
