@@ -104,6 +104,7 @@ exports.initWebSocket = (server) => {
                         }));
                     break;
                 case "GET_REGISTRATION_DATA_ADMIN":
+                    console.log(ws.isAdmin);
                     if(ws.isAdmin)
                         {
                         const resultRegistrationDataAdmin = await socketFunctions.fGetRegistrationDataAdmin();

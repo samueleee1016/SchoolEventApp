@@ -15,6 +15,7 @@ ws.onmessage = (msg) => {
     const data = JSON.parse(msg.data);
     switch (data.type) {
         case "LOAD_REGISTRATION_DATA_ADMIN":
+            console.log("ws recived");
             fLoadCoursesVisual(data.resultG1, data.resultG2);
             break;
         case "RESPONSE_VERIFY_ADMIN_PASSWORD":
@@ -45,6 +46,7 @@ function fVerifyCodeResponse(success, minutesLeft)
         overlay.style.display = 'none';
         ws.send(JSON.stringify({type: "GET_REGISTRATION_DATA_ADMIN"}));
         container.removeAttribute('hidden');
+        console.log("ws sent");
         }
     else if(minutesLeft)
         {
@@ -57,6 +59,7 @@ function fVerifyCodeResponse(success, minutesLeft)
 
 function fLoadCoursesVisual(resultG1, resultG2)
     {
+    console.log(resultG1, resultG2);
     if(!resultG1 )
         {
         tableG1.innerHTML = "non sono ancora presenti corsi";
