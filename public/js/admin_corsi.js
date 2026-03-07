@@ -108,15 +108,16 @@ function fLoadCoursesVisual(result)
         relatori.value = value;
         relatori.innerHTML = value;
         row.appendChild(relatori);
+        
+        let relatoriEst = document.createElement('td');
+        relatoriEst.value = result[i].nome_ref_esterni;
+        relatoriEst.innerHTML = result[i].nome_ref_esterni;
+        row.appendChild(relatoriEst);
 
         let email = document.createElement('td');
         email.innerHTML = result[i].email_ref;
         row.appendChild(email)
 
-        let relatoriEst = document.createElement('td');
-        relatoriEst.value = result[i].nome_ref_esterni;
-        relatoriEst.innerHTML = result[i].nome_ref_esterni;
-        row.appendChild(relatoriEst);
 
         let postiArray = [result[i].posti_1_1, result[i].posti_1_2, result[i].posti_1_3, result[i].posti_1_4, result[i].posti_1_5, result[i].posti_2_1, result[i].posti_2_2, result[i].posti_2_3, result[i].posti_2_4, result[i].posti_2_5];
         for(let j=0;j<DIM_POSTI;j++)

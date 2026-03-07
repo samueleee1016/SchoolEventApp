@@ -63,8 +63,8 @@ function fLoadCoursesVisual(resultG1, resultG2)
     console.log(resultG1, resultG2);
     if(!resultG1 )
         {
-        tableG1.innerHTML = "non sono ancora presenti corsi";
-        tableG2.innerHTML = "";
+        tableG1.innerHTML = "non c'è ancora nessun iscritto!";
+        tableG2.innerHTML = "non c'è ancora nessun iscritto!";
         nIscritti.innerHTML = 0;
         return;
         }
