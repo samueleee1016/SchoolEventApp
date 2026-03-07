@@ -12,9 +12,9 @@ let wss;
 
 exports.initWebSocket = (server) => {
     wss = new WebSocket.Server({server});
-    ws.isAdmin = false;
 
     wss.on('connection', (ws, req) => {
+        ws.isAdmin = false;
         ws.on('message', async (msg) => {
 
             const data = JSON.parse(msg.toString());
