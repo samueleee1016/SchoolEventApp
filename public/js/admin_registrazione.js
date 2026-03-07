@@ -44,6 +44,7 @@ function fVerifyCodeResponse(success, minutesLeft)
         error.setAttribute('hidden', 'yes');
         popup.setAttribute('hidden', 'yes');
         overlay.style.display = 'none';
+        console.log("before sending ws");
         ws.send(JSON.stringify({type: "GET_REGISTRATION_DATA_ADMIN"}));
         container.removeAttribute('hidden');
         console.log("ws sent");
