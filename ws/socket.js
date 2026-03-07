@@ -13,8 +13,10 @@ let wss;
 exports.initWebSocket = (server) => {
     wss = new WebSocket.Server({server});
 
-    wss.on('connection', (ws) => {
+    wss.on('connection', (ws, req) => {
         ws.on('message', async (msg) => {
+            ws.isAdmin = false;
+
             const data = JSON.parse(msg.toString());
             switch (data.type) {
                 case "GET_CORSI":
@@ -88,6 +90,41 @@ exports.initWebSocket = (server) => {
                 case "VERIFY_CODE":
                     const result = await fVerifyCode(data.code, data.email);
                     ws.send(JSON.stringify(result));
+                    break;
+                case "GET_COURSES_ADMIN":
+                    if(ws.isAdmin)
+                        {
+                        const resultCoursesDataAdmin = await socketFunctions.fGetCoursesAdmin();
+                        ws.send(JSON.stringify(resultCoursesDataAdmin));
+                        }
+                    else
+                        ws.send(JSON.stringify({
+                            type: "ERROR",
+                            message: "Unauthorized"
+                        }));
+                    break;
+                case "GET_REGISTRATION_DATA_ADMIN":
+                    if(ws.isAdmin)
+                        {
+                        const resultRegistrationDataAdmin = await socketFunctions.fGetRegistrationDataAdmin();
+                        ws.send(JSON.stringify(resultRegistrationDataAdmin));
+                        }
+                    else
+                        ws.send(JSON.stringify({
+                            type: "ERROR",
+                            message: "Unauthorized"
+                        }));
+                    break;
+                case "VERIFY_ADMIN_PASSWORD":
+                    const ip = req.socket.remoteAddress;
+                    const cleanIp = ip.replace('::ffff:', '');
+
+                    const resultVerifyAdminPassword = await socketFunctions.fVerifyAdminPassword(data.psw, cleanIp);
+
+                    if(resultVerifyAdminPassword.success)
+                        ws.isAdmin = true;
+
+                    ws.send(JSON.stringify(resultVerifyAdminPassword));
                     break;
                 default:
                     break;

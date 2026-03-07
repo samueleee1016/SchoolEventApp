@@ -21,6 +21,13 @@ router.post('/createCourse', validateCourse.validateCourse, controller.insering)
 
 router.post('/validateRegistration', validateRegistration.validateRegistration, controller.registration);
 
+router.get('/admin/coursesData', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/admin/admin_corsi.html'));
+});
+router.get('/admin/registrationData', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/admin/admin_registrazione.html'));
+});
+
 router.all(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, '../public/getAll.html'));
 });

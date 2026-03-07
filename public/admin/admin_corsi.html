@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>dati admin registrazione</title>
+        <link rel="stylesheet" href="../css/admin_corsi.css">
+    </head>
+    <body>
+        <div class="popup" id="popup">
+            <p id="par">Stai entrando in un area privata! Inserisci il codice di accesso qui sotto:</p>
+            <p id="error" hidden>password errata, accesso vietato</p>
+            <p id="rateLimit" hidden></p>
+            <input type="password" id="codPopup" maxlength="9" placeholder="•••••••••">
+        </div>
+        <div id="overlay"></div>
+
+        <div id="container" hidden>
+            <h3>Giorno 1 (gg/mm/aa):</h3>
+            <p>Numero di corsi presenti: <span id="nCorsi"></span></p>
+            <table id="courses">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th>Ore</th>
+                    <th>Disponibile il gg/mm/aa (1)</th>
+                    <th>Disponibile il gg/mm/aa (2)</th>
+                    <th>Relatori</th>
+                    <th>Relatori esterni</th>
+                    <th>email di riferimento</th>
+                    <th>posti_1_1</th>
+                    <th>posti_1_2</th>
+                    <th>posti_1_3</th>
+                    <th>posti_1_4</th>
+                    <th>posti_1_5</th>
+                    <th>posti_2_1</th>
+                    <th>posti_2_2</th>
+                    <th>posti_2_3</th>
+                    <th>posti_2_4</th>
+                    <th>posti_2_5</th>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <script src="../js/config.js"></script>
+    <script src="../js/admin_corsi.js"></script>
+</html>

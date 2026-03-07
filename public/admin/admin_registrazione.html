@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>dati admin registrazione</title>
+        <link rel="stylesheet" href="../css/admin_registrazione.css">
+    </head>
+    <body>
+        <div class="popup" id="popup">
+            <p id="par">Stai entrando in un area privata! Inserisci il codice di accesso qui sotto:</p>
+            <p id="error" hidden>password errata, accesso vietato</p>
+            <p id="rateLimit" hidden></p>
+            <input type="password" id="codPopup" maxlength="9" placeholder="•••••••••">
+        </div>
+        <div id="overlay"></div>
+        <div id="container" hidden>
+            <h3>Studenti iscritti:</h3>
+            <p>Numero di iscritti presenti: <span id="nIscritti"></span></p>
+            Giorno1: <br>
+            <table id="giorno1">
+                <tr>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Classe</th>
+                    <th>email</th>
+                    <th>Prima ora</th>
+                    <th>Seconda ora</th>
+                    <th>Terza ora</th>
+                    <th>Quarta ora</th>
+                    <th>Quinta ora</th>
+                </tr>
+            </table> <br>
+            Giorno2: <br>
+            <table id="giorno2">
+                <tr>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Classe</th>
+                    <th>email</th>
+                    <th>Prima ora</th>
+                    <th>Seconda ora</th>
+                    <th>Terza ora</th>
+                    <th>Quarta ora</th>
+                    <th>Quinta ora</th>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <script src="../js/config.js"></script>
+    <script src="../js/admin_registrazione.js"></script>
+</html>

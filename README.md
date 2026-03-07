@@ -1,6 +1,6 @@
 # 📚 SchoolEventDays - Event Registration System
 
-Sistema di gestione eventi su due giorni con registrazione sessioni orarie, verifica email OTP, e aggiornamenti real-time tramite WebSocket.
+Sistema di gestione eventi su due giorni con registrazione sessioni orarie, verifica email OTP, aggiornamenti real-time tramite WebSocket, e dashboard admin protetta.
 
 ![Inserimento corsi 1 preview](./screenshots/inserimentoCorsi1.png)
 ![Inserimento corsi 2 preview](./screenshots/inserimentoCorsi2.png)
@@ -21,6 +21,7 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 - [Installazione](#-installazione)
 - [Configurazione](#️-configurazione)
 - [Utilizzo](#-utilizzo)
+- [Admin Dashboard](#-admin-dashboard)
 - [Struttura del progetto](#-struttura-del-progetto)
 - [WebSocket Events](#-websocket-events)
 - [Security Features](#️-security-features)
@@ -40,17 +41,25 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 - ✅ **Supporto corsi multi-ora** (1, 2, 4, 5 ore)
 - ✅ **Referenti multipli** (fino a 4 interni + esterni)
 - ✅ **Rate limiting** per protezione da spam
+- ✅ **Dashboard Admin** protetta per visualizzazione dati
 
 ### Email System
 - 📧 **Email OTP** per verifica creazione corso (6 cifre, 5 min validità)
 - 📧 **Email conferma** registrazione con riepilogo corsi scelti
 - 📧 **Template HTML** responsive e professionali
-- 📧 **API HTTP** Con Resend API Key
+- 📧 **API HTTP** con Resend API Key
 
 ### Real-time Updates
 - ⚡ **WebSocket** per comunicazione bidirezionale
 - ⚡ **Aggiornamenti live** posti disponibili
 - ⚡ **Auto-refresh** lista corsi quando posti si esauriscono
+
+### Admin Dashboard
+- 🔐 **Accesso protetto** con password e rate limiting
+- 📊 **Visualizzazione corsi** con tutti i dettagli e posti disponibili
+- 👥 **Visualizzazione iscrizioni** separate per giorno 1 e giorno 2
+- 🔒 **SHA256 password hashing** per sicurezza
+- ⏱️ **Rate limiting avanzato** (3 tentativi / 30 minuti)
 
 ## 🛠️ Tecnologie
 
@@ -63,6 +72,7 @@ Sistema di gestione eventi su due giorni con registrazione sessioni orarie, veri
 - **Resend** (v6.9.3) - Invio email
 - **express-rate-limit** (v8.2.1) - Rate limiting middleware
 - **dotenv** (v17.2.3) - Environment variables
+- **crypto** (built-in) - Password hashing SHA256
 
 ### Frontend
 - **HTML5/CSS3** - Markup e styling
@@ -80,7 +90,7 @@ Prima di iniziare, assicurati di avere installato:
 - [MySQL](https://www.mysql.com/) v8 o superiore
 - [Redis](https://redis.io/) v6 o superiore (per rate limiting)
 - [Git](https://git-scm.com/) per clonare il repository
-- Account Gmail per invio email (con App Password abilitata)
+- Account Resend per invio email (con API Key)
 
 ### Verifica installazioni
 ```bash
@@ -136,12 +146,12 @@ redis-cli ping
 
 ### 5. Configura Resend per invio email
 
-**Crea la tua API Key su resend:**
-1. Vai su https://resend.com 
-2. Accedi o registrati
-3. Vai nella sezione API-keys
-4. Crea la tua chiave - attenzione! Sarà visibile solo una volta
-5. Usa la API key in `.env` 
+**Crea API Key per Resend:**
+1. Vai su https://resend.com/api-keys
+2. Crea un nuovo progetto (o usa esistente)
+3. Genera una API Key
+4. Copia la API Key (formato: `re_...`)
+5. Usa questa API Key in `.env`
 
 ## ⚙️ Configurazione
 
@@ -155,9 +165,6 @@ cp .env.example .env
 Modifica il file `.env` con le tue configurazioni:
 
 ```env
-#API_KEY_RESEND --> get it from https://resend.com/api-keys 
-RESEND_API_KEY=your_resend_api_key
-
 # ================================
 # DATABASE CONFIGURATION
 # ================================
@@ -174,12 +181,27 @@ DB_QUEUE_LIMIT=0
 # SERVER CONFIGURATION
 # ================================
 SERVER_PORT=3000
+
+# ================================
+# EMAIL CONFIGURATION (RESEND)
+# ================================
+# Get your API key from: https://resend.com/api-keys
+RESEND_API_KEY=re_your_resend_api_key_here
+
+# ================================
+# ADMIN DASHBOARD CONFIGURATION
+# ================================
+# Admin password for accessing protected dashboard
+# MUST be exactly 9 characters long
+ADMIN_PASSWORD=your_secure_9_char_password
+ADMIN_PASSWORD_LENGTH=9
 ```
 
 ### ⚠️ Note sulla sicurezza
 - **NON** committare mai il file `.env` su Git
-- Usa App Password di Gmail, non la password normale
+- Usa API Key Resend dedicata per produzione
 - Cambia le password di default del database
+- Usa password admin complessa (9 caratteri con lettere, numeri, simboli)
 - In produzione, usa valori diversi per ogni ambiente
 
 ## 💻 Utilizzo
@@ -196,24 +218,17 @@ NODE_ENV=production node main.js
 
 L'applicazione sarà disponibile su: **http://localhost:3000**
 
-## Test in produzione
-Se si vuole testare l'app in produzione lo si può fare da: https://schooleventapp-production.up.railway.app 
-Per la sezione inserimento andare a https://schooleventapp-production.up.railway.app/inserimentoCorsi
-Per la sezione registrazine andare a https://schooleventapp-production.up.railway.app/registrazione
-Altrimenti seguire le istruzioni qui sotto
-
-### N.B.: 
-L'applicazione è divisa in due parti distinte, una di solo per l'inserimento dei corsi, una solo per la registrazione. In diversi codici ci sono delle parti commentate riferite solo alla parte di registrazione (attiva dopo che è stata attiva quella di inserimento). Queste vanno decommentate e vanno commentate invece le parti legate solo all'inserimento dei corsi. 
-
 ### Accedi all'applicazione
 
-1. **Inserimento Corsi:** Vai su `http://localhost:3000/inserimentoCorsi`
-2. **Registrazione Studenti:** Vai su `http://localhost:3000/registrazione`
+1. **Homepage:** `http://localhost:3000`
+2. **Inserimento Corsi:** Click su "Inserisci un nuovo corso"
+3. **Registrazione Studenti:** Click su "Registrati ai corsi"
+4. **Dashboard Admin:** `http://localhost:3000/admin/admin_corsi.html` o `admin_registrazione.html`
 
 ### Workflow tipico
 
 #### **Per gli Organizzatori:**
-1. Accedi a `http://localhost:3000/inserimentoCorsi`
+1. Accedi a "Inserisci un nuovo corso"
 2. Compila form con dettagli corso
 3. Inserisci email referente
 4. Ricevi codice OTP via email (6 cifre, valido 5 minuti)
@@ -221,12 +236,155 @@ L'applicazione è divisa in due parti distinte, una di solo per l'inserimento de
 6. Corso creato e visibile agli studenti!
 
 #### **Per gli Studenti:**
-1. Accedi a `http://localhost:3000/registrazione`
+1. Accedi a "Registrati ai corsi"
 2. Inserisci Nome, Cognome, Classe, Email
 3. Seleziona corsi per ogni ora (Giorno 1 e Giorno 2)
 4. Sistema verifica disponibilità posti in real-time
 5. Submit registrazione
 6. Ricevi email di conferma con riepilogo
+
+## 🔐 Admin Dashboard
+
+### Accesso alla Dashboard
+
+**Pagine disponibili:**
+- `/admin/admin_corsi.html` - Visualizzazione completa di tutti i corsi
+- `/admin/admin_registrazione.html` - Visualizzazione di tutte le iscrizioni
+
+**Come accedere:**
+1. Naviga su una delle pagine admin
+2. Apparirà un popup di autenticazione
+3. Inserisci la password admin (9 caratteri)
+4. Accedi ai dati protetti
+
+### Configurazione Password Admin
+
+**Setup in `.env`:**
+```env
+# Password deve essere ESATTAMENTE 9 caratteri
+ADMIN_PASSWORD=MyP@ss123
+ADMIN_PASSWORD_LENGTH=9
+```
+
+**Requisiti:**
+- ✅ Esattamente 9 caratteri (configurabile)
+- ✅ Consigliato: mix di lettere, numeri, simboli
+- ✅ Non usare password ovvie o facilmente indovinabili
+- ✅ Cambia password regolarmente in produzione
+
+### Funzionalità Dashboard
+
+#### **Admin Corsi** (`/admin/admin_corsi.html`)
+**Visualizza:**
+- Numero totale corsi creati
+- Nome e descrizione completa
+- Numero ore per corso
+- Disponibilità giorno 1 e giorno 2
+- Elenco relatori interni (fino a 4)
+- Relatori esterni
+- Email referente
+- **Posti disponibili** per ogni ora di entrambi i giorni (10 colonne)
+
+#### **Admin Registrazioni** (`/admin/admin_registrazione.html`)
+**Visualizza:**
+- Numero totale iscrizioni
+- **Tabella Giorno 1:**
+  - Nome, Cognome, Classe, Email studente
+  - Corsi scelti per le 5 ore del giorno 1
+- **Tabella Giorno 2:**
+  - Nome, Cognome, Classe, Email studente
+  - Corsi scelti per le 5 ore del giorno 2
+
+### Security Features Dashboard
+
+#### **1. SHA256 Password Hashing**
+```javascript
+// Password hashata con algoritmo SHA256
+const hashedPassword = crypto.createHash('sha256')
+    .update(password)
+    .digest('hex');
+```
+- ✅ Password mai salvata in chiaro
+- ✅ Hash calcolato server-side al startup
+- ✅ Confronto tra hash (non plaintext)
+- ✅ Protezione anche in caso di leak logs
+
+#### **2. Rate Limiting Avanzato**
+```
+Max tentativi: 3 per IP
+Finestra tempo: 30 minuti
+Blocco: 30 minuti dopo 3 tentativi falliti
+Reset: Automatico al login successo
+```
+
+**Comportamento:**
+- Tentativo 1 errato: Remaining 2
+- Tentativo 2 errato: Remaining 1
+- Tentativo 3 errato: **BLOCCO 30 minuti**
+- Login successo: Counter reset
+
+**Messaggi utente:**
+- Password corretta: Accesso immediato
+- Password errata: "Password errata, accesso vietato"
+- Rate limited: "Hai superato il limite di tentativi! Riprova tra X minuti"
+
+#### **3. Automatic Cleanup**
+- ✅ Pulizia automatica record scaduti ogni 60 minuti
+- ✅ Previene memory leak
+- ✅ Log cleanup in console per monitoring
+
+#### **4. Input Protection**
+```html
+<input type="password" maxlength="9" placeholder="•••••••••">
+```
+- ✅ Type password (caratteri nascosti)
+- ✅ Max length validation
+- ✅ Placeholder user-friendly
+
+### Esempi di Utilizzo
+
+#### **Scenario 1: Login Admin Prima Volta**
+```
+1. Admin apre /admin/admin_corsi.html
+2. Popup appare: "Inserisci il codice di accesso"
+3. Admin digita password (9 caratteri)
+4. Sistema verifica password
+5. ✅ Accesso garantito, popup scompare
+6. Tabella corsi caricata via WebSocket
+```
+
+#### **Scenario 2: Password Errata**
+```
+1. Admin inserisce password sbagliata
+2. Messaggio: "password errata, accesso vietato"
+3. Admin riprova (tentativo 2/3)
+4. Ancora errata (tentativo 3/3)
+5. ❌ Blocco 30 minuti
+6. Messaggio: "Hai superato il limite di tentativi! Riprova tra 30 minuti"
+```
+
+#### **Scenario 3: Visualizzazione Dati**
+```
+1. Admin autenticato accede a admin_registrazione.html
+2. Sistema carica dati via WebSocket
+3. Tabella Giorno 1: 45 studenti
+4. Tabella Giorno 2: 45 studenti
+5. Admin può scrollare e vedere tutti i dettagli
+```
+
+### Tecnologie Dashboard
+
+**Frontend:**
+- HTML5 popup modal con overlay
+- CSS3 per styling tabelle e popup
+- Vanilla JavaScript per WebSocket communication
+- DOM manipulation per rendering dinamico
+
+**Backend:**
+- WebSocket events dedicati (`VERIFY_ADMIN_PASSWORD`, `GET_COURSES_ADMIN`, `GET_REGISTRATION_DATA_ADMIN`)
+- Classe `adminLoginLimiter` per rate limiting
+- SHA256 hashing con Node.js `crypto` module
+- IP tracking con Map (in-memory storage)
 
 ## 📁 Struttura del progetto
 
@@ -249,15 +407,26 @@ SchoolEventDays/
 │   ├── rateLimiter.function.js       # Rate limiters (Redis)
 │   ├── serviceFunctions.js           # Utility functions
 │   ├── validateCourse.middleware.js  # Validazione creazione corso
-│   └── validateRegistration.middleware.js
+│   ├── validateRegistration.middleware.js
+│   ├── webSocketFunctions.js         # WebSocket handlers + admin password
+│   └── wsAdminRateLimiter.js        # Rate limiter classe admin
 │
 ├── public/                   # File statici (client-side)
+│   ├── admin/               # Dashboard admin pages
+│   │   ├── admin_corsi.html
+│   │   └── admin_registrazione.html
+│   │
 │   ├── css/                 # Stili CSS
+│   │   ├── admin_corsi.css
+│   │   └── admin_registrazione.css
+│   │
 │   ├── js/                  # JavaScript client-side
 │   │   ├── config.js        # Configurazione URL dinamici
 │   │   ├── corsi.js         # Lista corsi disponibili
 │   │   ├── inserimentoCorsi.js
-│   │   └── registrazione.js
+│   │   ├── registrazione.js
+│   │   ├── admin_corsi.js   # Dashboard admin corsi
+│   │   └── admin_registrazione.js  # Dashboard admin registrazioni
 │   │
 │   ├── limiterResponse/     # Pagine HTML errore rate limit
 │   ├── corsi.html           # Pagina lista corsi
@@ -275,7 +444,7 @@ SchoolEventDays/
 │   └── service.js           # Servizi registrazione/creazione
 │
 ├── ws/                       # WebSocket management
-│   └── socket.js            # WebSocket server setup
+│   └── socket.js            # WebSocket server setup + admin auth
 │
 ├── .env                      # Variabili d'ambiente (NON committare!)
 ├── .env.example             # Template variabili d'ambiente
@@ -294,6 +463,9 @@ SchoolEventDays/
 | Event | Descrizione | Payload |
 |-------|-------------|---------|
 | `GET_CORSI` | Richiede lista corsi disponibili | `{type: "GET_CORSI"}` |
+| `VERIFY_ADMIN_PASSWORD` | Verifica password admin | `{type: "VERIFY_ADMIN_PASSWORD", psw: "password"}` |
+| `GET_COURSES_ADMIN` | Richiede tutti i corsi (admin) | `{type: "GET_COURSES_ADMIN"}` |
+| `GET_REGISTRATION_DATA_ADMIN` | Richiede iscrizioni (admin) | `{type: "GET_REGISTRATION_DATA_ADMIN"}` |
 
 ### Server → Client
 
@@ -301,6 +473,9 @@ SchoolEventDays/
 |-------|-------------|---------|
 | `RESULT_GET_CORSI` | Lista corsi con posti disponibili | `{type: "RESULT_GET_CORSI", result: [...]}` |
 | `DELETE_CORSO_FULL` | Rimuove corso pieno dalla lista | `{type: "DELETE_CORSO_FULL", codice_corso, giorno, ora}` |
+| `RESPONSE_VERIFY_ADMIN_PASSWORD` | Risposta verifica password | `{type: "RESPONSE_VERIFY_ADMIN_PASSWORD", success: true/false, minutesLeft?: number}` |
+| `LOAD_COURSES_ADMIN` | Carica corsi in dashboard | `{type: "LOAD_COURSES_ADMIN", result: [...]}` |
+| `LOAD_REGISTRATION_DATA_ADMIN` | Carica iscrizioni in dashboard | `{type: "LOAD_REGISTRATION_DATA_ADMIN", resultG1: [...], resultG2: [...]}` |
 
 ## 🛡️ Security Features
 
@@ -318,26 +493,34 @@ SchoolEventDays/
 
 ### Rate Limiting
 - ✅ **Global rate limiter** (1500 richieste/minuto per IP)
+- ✅ **Admin rate limiter** (3 tentativi/30 minuti per IP)
 - ✅ **Protezione contro spam** su tutti gli endpoint
 - ✅ **Pagine HTML custom** per errori 429
+
+### Admin Dashboard Security
+- ✅ **SHA256 password hashing** (no plaintext)
+- ✅ **Rate limiting dedicato** con blocco temporaneo
+- ✅ **IP tracking** per prevenire brute force
+- ✅ **Automatic cleanup** record scaduti
+- ✅ **Input type password** con maxlength
+- ✅ **WebSocket authentication** per accesso dati
 
 ### Database Security
 - ✅ **Prepared statements** (protezione SQL injection)
 - ✅ **Connection pooling** per performance
 - ✅ **Credenziali da .env** (non hardcoded)
 - ✅ **Transazioni atomiche** per race conditions
+- ✅ **FOR UPDATE** locking per registrazioni
 
 ### WebSocket Security
 - ✅ **Validazione messaggi** JSON
 - ✅ **Try-catch** su message handlers
 - ✅ **Broadcast controllato** (solo quando necessario)
+- ✅ **Admin authentication** per dati sensibili
 
 ## 🌐 Deploy
 
 ### Railway (Consigliato)
-
-Nel caso non lo avessi visto, poco sopra trovi il link per provare l'app che è già disponibile in produzione.
-Altrimenti, se vuoi effettuare tu stesso/a il deploy, segui le istruzioni qui sotto:
 
 ```bash
 # Installa Railway CLI
@@ -361,7 +544,12 @@ railway up
 
 **Configura variabili d'ambiente su Railway:**
 1. Dashboard → Project → Variables
-2. Aggiungi tutte le variabili da `.env`
+2. Aggiungi tutte le variabili da `.env`:
+   - `DB_*` (auto-configurate da Railway MySQL)
+   - `RESEND_API_KEY`
+   - `ADMIN_PASSWORD` (genera password sicura!)
+   - `ADMIN_PASSWORD_LENGTH=9`
+   - `SERVER_PORT=3000`
 3. Railway auto-configura `DATABASE_URL` e `REDIS_URL`
 
 **Importa schema database:**
@@ -373,8 +561,17 @@ railway run mysql --host=$MYSQLHOST --user=$MYSQLUSER --password=$MYSQLPASSWORD 
 - ✅ Configura tutte le variabili d'ambiente
 - ✅ Importa schema database
 - ✅ Testa connessione Redis
-- ✅ Verifica invio email (Gmail App Password)
+- ✅ Verifica invio email (Resend API Key)
 - ✅ Testa registrazione completa end-to-end
+- ✅ **Testa admin dashboard con password**
+- ✅ **Verifica rate limiting admin**
+
+### Security in Produzione
+- ✅ Railway usa HTTPS automaticamente (WSS per WebSocket)
+- ✅ Usa password admin complessa e unica
+- ✅ Monitora log per tentativi accesso admin
+- ✅ Cambia password admin regolarmente
+- ✅ Non condividere password admin
 
 ## 📊 Database Schema
 
@@ -398,14 +595,14 @@ railway run mysql --host=$MYSQLHOST --user=$MYSQLUSER --password=$MYSQLPASSWORD 
 - Struttura identica a giorno 1
 
 **`elenco_relatori`** - Cache relatori
-- `nome`, `cognome`, `classe`, `nome_corso`
+- `nome`, `cognome`, `classe`
 
-**`emails_for_verification`** - OTP temporanei
-- `verificationId` 
-- `codice` (6 cifre)
+**`emails_for_verify`** - OTP temporanei
+- `verificationId` (UUID)
 - `email`
-- `status` (default 'pending' altrimenti 'verified' o 'expired')
-- `expires_at` (timestamp per validità 5 min)
+- `codice` (6 cifre)
+- `expires_at` (timestamp validità 5 min)
+- `status` (pending/verified/expired)
 
 ## 🎓 Use Cases
 
