@@ -221,9 +221,9 @@ L'applicazione sarà disponibile su: **http://localhost:3000**
 ### Accedi all'applicazione
 
 1. **Homepage:** `http://localhost:3000`
-2. **Inserimento Corsi:** Click su "Inserisci un nuovo corso"
-3. **Registrazione Studenti:** Click su "Registrati ai corsi"
-4. **Dashboard Admin:** `http://localhost:3000/admin/admin_corsi.html` o `admin_registrazione.html`
+2. **Inserimento Corsi:** `http://localhost:3000/inserimentoCorsi`
+3. **Registrazione Studenti:** `http://localhost:3000/registrazione`
+4. **Dashboard Admin:** `http://localhost:3000/admin/coursesData` o `http://localhost:3000/admin/registrationData`
 
 ### Workflow tipico
 
@@ -595,7 +595,7 @@ railway run mysql --host=$MYSQLHOST --user=$MYSQLUSER --password=$MYSQLPASSWORD 
 - Struttura identica a giorno 1
 
 **`elenco_relatori`** - Cache relatori
-- `nome`, `cognome`, `classe`
+- `nome`, `cognome`, `classe`, `nome_corso`
 
 **`emails_for_verify`** - OTP temporanei
 - `verificationId` (UUID)
