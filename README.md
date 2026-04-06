@@ -629,7 +629,6 @@ railway run mysql --host=$MYSQLHOST --user=$MYSQLUSER --password=$MYSQLPASSWORD 
 **Samuele Mastrovincenzo**
 
 - 🐙 GitHub: [@samueleee1016](https://github.com/samueleee1016)
-- 📧 Email: samuele.mastrovincenzo@gmail.com
 
 ## 🤝 Contribuire
 
