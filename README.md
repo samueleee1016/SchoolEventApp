@@ -641,13 +641,6 @@ I contributi sono benvenuti! Per contribuire:
 4. Push al branch (`git push origin feature/AmazingFeature`)
 5. Apri una Pull Request
 
-## 🙏 Ringraziamenti
-
-- Express.js team per il framework
-- Resend per il sistema email
-- MySQL team per il database
-- Comunità Node.js per supporto
-
 ---
 
 **⭐ Se questo progetto ti è stato utile, lascia una stella! ⭐**
